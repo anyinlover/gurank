@@ -5,14 +5,14 @@ from gurank.evaluation.ndcg import NDCG
 from gurank.data.msmarco import msmarco
 
 ARGS = {
-    "dataset": "~/Data/huggingface/ms_marco",
+    "dataset": "/home/guhangsong/Data/huggingface/ms_marco/",
     "version": "v1.1",
     "max_length": 512,
-    "pretrained_model": "~/Data/huggingface/distilroberta-base",
+    "pretrained_model": "bert-base-uncased",
     "output_dir": "tests/output/monobert",
     "num_train_epochs": 1,
     "learning_rate": 2e-5,
-    "batch_size": 32,
+    "batch_size": 16,
     "warmup_steps": 5000,
     "weight_decay": 0.01,
     "logging_steps": 5000,
@@ -21,7 +21,7 @@ ARGS = {
 
 def train(args):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    model = MonoBert(args["pretrained_model"]).to(device)
+    model = MonoBert.from_pretrained(args["pretrained_model"], num_labels=2, return_dict=False).to(device)
     tokenizer = AutoTokenizer.from_pretrained(args["pretrained_model"])
     dataset = msmarco(args["dataset"], tokenizer, args["version"], args["max_length"])
     training_args = TrainingArguments(output_dir=args["output_dir"],

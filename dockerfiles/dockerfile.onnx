@@ -1,0 +1,8 @@
+ARG PYTORCH_CONTAINER_VERSION=22.09
+FROM nvcr.io/nvidia/pytorch:${PYTORCH_CONTAINER_VERSION}-py3
+
+
+RUN pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple &&\
+    pip config set global.trusted-host pypi.tuna.tsinghua.edu.cn &&\
+    pip config set global.extra-index-url https://pypi.tuna.tsinghua.edu.cn/simple &&\
+    pip install onnxruntime-gpu onnx transformers datasets evaluate optimum 
