@@ -130,3 +130,5 @@ dmypy.json
 
 output
 .vscode
+*.pklz4
+.editorconfig
