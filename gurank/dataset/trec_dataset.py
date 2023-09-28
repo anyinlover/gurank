@@ -126,7 +126,7 @@ class DataCollator:
     DataCollator for TrecDataset
     """
     tokenizer: PreTrainedTokenizerBase
-    max_length: Optional[int] = None
+    max_length: Optional[int] = 512
     padding: Optional[bool] = True
     truncation: Optional[Union[str, bool]] = "only_second"
     prompt: Optional[str] = None
@@ -154,7 +154,7 @@ class QueryDataCollator:
     """
     tokenizer: PreTrainedTokenizerBase
     docs_per_query: int
-    max_length: Optional[int] = None
+    max_length: Optional[int] = 512
     padding: Optional[bool] = True
     truncation: Optional[Union[str, bool]] = "only_second"
     prompt: Optional[str] = None
@@ -164,7 +164,7 @@ class QueryDataCollator:
         texts = []
         rels = []
         for qds in features:
-            if not (len(qds["docs"] == qds("labels") == docs_per_query)):
+            if not (len(qds["docs"]) == len(qds["labels"]) == self.docs_per_query):
                 raise ValueError(f"The docs or labels num under query {qds['query']} is not equal to docs_per_query")
             for doc, label in zip(qds["docs"], qds["labels"]):
                 texts.append(create_sample(qds["query"], doc, self.prompt))
